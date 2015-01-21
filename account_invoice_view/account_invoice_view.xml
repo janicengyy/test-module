@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="detail_invoice_line_customer" model="ir.ui.view">
+            <field name="name">account.invoice.detail.customer</field>  
+            <field name="model">account.invoice</field>   
+            <field name="arch" type="xml">
+
+                <tree string="Customer Invoices Detail" create="false" delete="false">  
+                    <field name="number"/>
+                    <field name="reference"/>
+                    <field name="state"/>
+			        <field name="partner_id" string="Customer"/>
+				<!-- what is the difference?
+				    <field name="partner_id" groups="base.group_user"/>
+				-->
+                    <field name="user_id"/>
+                    <field name="date_invoice"/>
+                    <field name="date_due"/>
+                    <field name="product_id"/>
+                    <field name="name"/>
+		<!-- In account.invoice but don't know if useful -->
+                    <field name="journal_id" invisible="1"/>
+                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection" invisible="1"/>
+		
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+
+		<!-- In account.invoice but don't know if useful -->
+                    <field name="residual" sum="Residual Amount"/>
+                    <field name="amount_untaxed" sum="Untaxed Amount"/>
+
+		<!-- this is the total amount with tax added -->
+                    <field name="amount_total" sum="Total Amount"/>
+		<!-- this part should come from py -->					
+                    <field name="rate"/>
+                    <field name="base_amt"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="detail_invoice_line_supplier" model="ir.ui.view">
+            <field name="name">account.invoice.detail.supplier</field>  
+            <field name="model">account.invoice</field>   
+            <field name="arch" type="xml">
+                <tree string="Supplier Invoices Detail" create="false" delete="false">  
+                    <field name="number"/>
+                    <field name="reference"/>
+                    <field name="state"/>
+                    <field name="partner_id" string="Supplier"/>
+                    <field name="user_id"/>
+                    <field name="date_invoice"/>
+                    <field name="date_due"/>
+                    <field name="product_id"/>
+                    <field name="name"/>
+		<!-- In account.invoice but don't know if useful -->
+                    <field name="journal_id" invisible="1"/>
+                    <field name="period_id" invisible="1" groups="account.group_account_user"/>
+                    <field name="company_id" groups="base.group_multi_company" widget="selection" invisible="1"/>
+		
+                    <field name="currency_id" groups="base.group_multi_currency"/>
+
+		<!-- In account.invoice but don't know if useful -->
+                    <field name="residual" sum="Residual Amount"/>
+                    <field name="amount_untaxed" sum="Untaxed Amount"/>
+
+		<!-- this is the total amount with tax added -->
+                    <field name="amount_total" sum="Total Amount"/>
+		<!-- this part should come from py 	-->			
+                    <field name="rate"/>
+                    <field name="base_amt"/>
+                </tree>
+            </field>
+        </record>
+
+
+
+        <record model='ir.actions.act_window' id='invoice_detail_action_customer'> 
+            <field name="name">Customer Invoices Detail</field> 
+            <field name="res_model">account.invoice</field>
+			
+		<!-- don't know what is domain !_!
+            <field name="domain">[('invoice_line.type','=','out_invoice')]</field>
+		-->
+            <field name="view_id" ref="detail_invoice_line_customer"/>
+        </record>
+		<menuitem id="customer_invoice_detail_menu" name="Customer Invoices Detail " parent="account.menu_finance_receivables" action="invoice_detail_action_customer" sequence="20"/>
+		
+		
+		
+
+        <record model='ir.actions.act_window' id='invoice_detail_action_supplier'>
+            <field name="name">Supplier Invoices Detail</field>
+            <field name="res_model">account.invoice</field>
+		<!-- don't know what is domain !_! 
+            <field name="domain">[('invoice_line.type','=','in_invoice')]</field>
+        -->
+			<field name="view_id" ref="detail_invoice_line_supplier"/>
+		</record>
+		<menuitem id="supplier_invoice_detail_menu" name="Supplier Invoices Detail" parent="account.menu_finance_payables" action="invoice_detail_action_supplier" sequence="20"/>
+
+
+    </data>
+</openerp>
